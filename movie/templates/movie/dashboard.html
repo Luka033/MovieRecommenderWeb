@@ -64,19 +64,42 @@
                         </tr>
                         </thead>
                         <tbody>
-<!--                        hello-->
+                        <!--                        hello-->
                         {% for movie in movies %}
                         <tr>
                             <th scope="row">{{ forloop.counter }}</th>
                             <!--                            <td><a href="http://127.0.0.1:8000/?name={{ movie }}">{{ movie }}</a></td>-->
                             <td>
-                                <a href="{{movies.pk}}" type="button" data-toggle="modal"
-                                        data-target="#myModal">
+                                <a type="button" data-toggle="modal"
+                                   data-target="#myModal{{movie}}">
                                     {{movie.0}}
                                 </a>
                             </td>
                             <td>{{movie.3}}</td>
                             <td><a href="">Add</a></td>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="myModal{{movie}}" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalTitle"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="myModalTitle">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            {{movie}}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                         </tr>
@@ -90,28 +113,6 @@
         </div>
     </div>
 </section>
-
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalTitle"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalTitle">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {{movies}}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <footer class="footer">

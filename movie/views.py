@@ -89,8 +89,7 @@ def logout_user(request):
 
 
 def search_movie(request):
-    movies = ""
-    movie_info = ""
+
     info_for_all_movies = []
     recommender = MovieRecommender()
     form = MovieForm(request.POST)
@@ -102,15 +101,10 @@ def search_movie(request):
             for movie in movies:
                 movie_info = recommender.get_movie_info(movie)
                 info_for_all_movies.append(movie_info)
-
     if request.method == 'GET':
-        info = request.GET.get('name')
-        movie_info = recommender.get_movie_info(info)
-        print("MOVIE INFO: ", movie_info)
+        print("MOVIE NAME: ", request.GET)
 
     context = {'movies': info_for_all_movies, 'form': form}
-
-
     return render(request, 'movie/dashboard.html', context)
 
 

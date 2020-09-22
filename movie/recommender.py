@@ -1,15 +1,17 @@
 import difflib
 import pandas as pd
 import numpy as np
+import os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
+from movie_recommender.settings import BASE_DIR
 
 
 class MovieRecommender:
     def __init__(self):
         # Step 1: Read CSV File
-        # TODO: Fix file path
-        self.df = pd.read_csv('/Users/lukajozic/Docs/Python/Django/movie_recommender/movie/movie_dataset.csv')
+        self.df = pd.read_csv(os.path.join(BASE_DIR, 'movie/movie_dataset.csv'))
 
         # Step 2: Select Features
         self.features = ['keywords', 'cast', 'genres', 'director']
