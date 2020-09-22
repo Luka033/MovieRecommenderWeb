@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Movie Lists</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+{% include 'movie/navbar.html' %}
+
+
+<table class="table table-bordered">
+    <thead>
+
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Movie</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for movie in movies_in_list %}
+    <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td><a href="http://127.0.0.1:8000/?name={{ movie }}">{{ movie }}</a></td>
+        <td><a href="">Add</a></td>
+    </tr>
+
+    </tbody>
+    {% endfor %}
+</table>
+
+
+</body>
+</html>

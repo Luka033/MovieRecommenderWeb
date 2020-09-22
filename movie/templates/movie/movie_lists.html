@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Movie Lists</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+
+{% include 'movie/navbar.html' %}
+
+<div class="col-md-5">
+    <h5>Your Movie Lists:</h5>
+    <hr>
+    <div class="card card-body">
+        <a class="btn btn-primary  btn-sm btn-block" href="{% url 'create_list' %}">Create New Movie List</a>
+        <table class="table table-sm">
+            <tr>
+				<th>View</th>
+                <th>Movie list</th>
+				<th>Remove</th>
+            </tr>
+
+            {% for list in user_movie_lists %}
+            <tr>
+                <td><a class="btn btn-sm btn-info" href="{% url 'movies' list.id %}">View</a></td>
+                <td>{{list}}</td>
+				<td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+</div>
+</body>
+<!--    <h3>Your Movies</h3>-->
+<!--    {% for list in user_movie_lists %}-->
+<!--        <h5><a href="">{{list}}</a></h5>-->
+
+
+<!--    {% endfor %}-->
+
