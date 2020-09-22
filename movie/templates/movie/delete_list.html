@@ -1,0 +1,15 @@
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-body">
+
+            <p>Are you sure you want to delete {{list_to_delete}}?</p>
+
+            <form method="POST" action="{% url 'delete_list' list_to_delete.id %}">
+                {% csrf_token %}
+                <a class="btn btn-warning" href="{% url 'movie_lists' %}">Cancel</a>
+
+                <input class="btn btn-danger" type="submit" name="Confirm">
+            </form>
+        </div>
+	</div>
+</div>

@@ -7,7 +7,7 @@ urlpatterns = [
     path('movies/<str:pk>', views.movies, name="movies"),
 
     path('create_list/', views.create_list, name="create_list"),
-    path('testmodal/', views.testmodal, name="testmodal"),
+    path('delete_list/<str:pk>', views.delete_list, name="delete_list"),
 
     path('register/', views.register_page, name="register"),
     path('login/', views.login_page, name="login"),

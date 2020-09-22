@@ -27,7 +27,7 @@
             <tr>
                 <td><a class="btn btn-sm btn-info" href="{% url 'movies' list.id %}">View</a></td>
                 <td>{{list}}</td>
-				<td><a class="btn btn-sm btn-danger" href="">Delete</a></td>
+				<td><a class="btn btn-sm btn-danger" href="{% url 'delete_list' list.id %}">Delete</a></td>
             </tr>
             {% endfor %}
 

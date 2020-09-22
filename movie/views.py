@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='login')
 def movie_lists(request):
     user = User.objects.get(id=request.user.id)
-    user_movie_lists = user.movielist_set.all()
+    user_movie_lists = user.movielist_set.all().order_by('list_name')
 
     context = {'user_movie_lists': user_movie_lists}
     return render(request, 'movie/movie_lists.html', context)
@@ -23,7 +23,7 @@ def movie_lists(request):
 def movies(request, pk):
     # print("LIST PK: ", pk)
     movie_list = MovieList.objects.get(id=pk)
-    movies_in_list = movie_list.movie_set.all()
+    movies_in_list = movie_list.movie_set.all().order_by('name')
 
 
     context = {'movies_in_list': movies_in_list}
@@ -110,6 +110,12 @@ def search_movie(request):
 
 
 
-def testmodal(request):
-    context = {}
-    return render(request, 'movie/testmodal.html', context)
+def delete_list(request, pk):
+    list_to_delete = MovieList.objects.get(id=pk)
+
+    if request.method == 'POST':
+        list_to_delete.delete()
+        return redirect('movie_lists')
+
+    context = {'list_to_delete': list_to_delete}
+    return render(request, 'movie/delete_list.html', context)
