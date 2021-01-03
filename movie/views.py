@@ -3,7 +3,7 @@ from .recommender import MovieRecommender
 from .models import *
 from .forms import MovieForm, CreateUserForm, CreateListForm
 from django.contrib.auth.forms import UserCreationForm
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -87,17 +87,13 @@ def logout_user(request):
     return redirect('home')
 
 
-def add_movie_to_list(request, pk):
-    print("HELOOOOOOOOOO")
-    # print("MOVIE: ", key)
-    print(request.GET.get('movie'))
-    if request.method == "GET":
-        print("MOVIE LIST: ", pk)
+def add_movie(request, pk):
+    print(request.GET['movie'])
+    print("MOVIE LIST: ", pk)
 
-    # movie = Movie.objects.get(id=pk)
-    # movie_list = MovieList.objects.get(id=pk2)
 
-    return redirect('home')
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))
 
 
 
@@ -121,10 +117,6 @@ def search_movie(request):
             for movie in movies:
                 movie_info = recommender.get_movie_info(movie)
                 info_for_all_movies.append(movie_info)
-                # print(info_for_all_movies)
-
-    # if request.method == 'GET':
-        # print("USER MOVIE LISTS: ", user_movie_lists)
 
     if request.user.is_authenticated:
         context = {'movies': info_for_all_movies,

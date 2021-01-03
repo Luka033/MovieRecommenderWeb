@@ -131,11 +131,10 @@
                                         <div class="modal-body">
 
                                             {% for movie_list in user_movie_lists %}
-                                            <form action="{% url 'add_movie' pk=movie_list.id %}" method="get">
-                                                {% csrf_token %}
-                                                {{movie.0}} <button type="submit">Add</button> to {{movie_list}}
+                                            <form action="{% url 'add_movie' movie_list.id%}" method="GET">
+                                                <button name="movie" value="{{ movie.0 }}">{{ movie_list }}</button>
                                                 <br>
-                                             </form>
+                                            </form>
                                             {% endfor %}
 
                                         </div>
