@@ -21,7 +21,6 @@ def movie_lists(request):
 
 @login_required(login_url='login')
 def movies(request, pk):
-    # print("LIST PK: ", pk)
     movie_list = MovieList.objects.get(id=pk)
     movies_in_list = movie_list.movie_set.all().order_by('name')
 
@@ -88,11 +87,32 @@ def logout_user(request):
     return redirect('home')
 
 
+def add_movie_to_list(request, pk):
+    print("HELOOOOOOOOOO")
+    # print("MOVIE: ", key)
+    print(request.GET.get('movie'))
+    if request.method == "GET":
+        print("MOVIE LIST: ", pk)
+
+    # movie = Movie.objects.get(id=pk)
+    # movie_list = MovieList.objects.get(id=pk2)
+
+    return redirect('home')
+
+
+
+
 def search_movie(request):
 
     info_for_all_movies = []
     recommender = MovieRecommender()
     form = MovieForm(request.POST)
+
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        user_movie_lists = user.movielist_set.all().order_by('list_name')
+
+
     if request.method == 'POST':
 
         if 'search_movie' in request.POST:
@@ -101,15 +121,23 @@ def search_movie(request):
             for movie in movies:
                 movie_info = recommender.get_movie_info(movie)
                 info_for_all_movies.append(movie_info)
-    if request.method == 'GET':
-        print("MOVIE NAME: ", request.GET)
+                # print(info_for_all_movies)
 
-    context = {'movies': info_for_all_movies, 'form': form}
+    # if request.method == 'GET':
+        # print("USER MOVIE LISTS: ", user_movie_lists)
+
+    if request.user.is_authenticated:
+        context = {'movies': info_for_all_movies,
+                   'user_movie_lists': user_movie_lists,
+                   'form': form}
+    else:
+        context = {'movies': info_for_all_movies,
+                   'form': form}
     return render(request, 'movie/dashboard.html', context)
 
 
 
-
+@login_required(login_url='login')
 def delete_list(request, pk):
     list_to_delete = MovieList.objects.get(id=pk)
 

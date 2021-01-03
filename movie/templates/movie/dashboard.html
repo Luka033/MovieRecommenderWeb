@@ -76,26 +76,71 @@
                                 </a>
                             </td>
                             <td>{{movie.3}}</td>
-                            <td><a href="">Add</a></td>
+                            <td>
+                                <a type="button" data-toggle="modal"
+                                   data-target="#addModal{{movie}}">
+                                    Add
+                                </a>
+                            </td>
 
-                            <!-- Modal -->
+
+                            <!-- Modal Movie Info-->
                             <div class="modal fade" id="myModal{{movie}}" tabindex="-1" role="dialog"
                                  aria-labelledby="myModalTitle"
                                  aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="myModalTitle">Modal title</h5>
+                                            <h5 class="modal-title" id="myModalTitle">Movie Info</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            {{movie}}
+                                            <b>Title:</b> {{movie.0}}
+                                            <br>
+                                            <b>Director:</b> {{movie.1}}
+                                            <br>
+                                            <b>Cast:</b> {{movie.2}}
+                                            <br>
+                                            <b>Rating:</b> {{movie.3}}
+                                            <br>
+                                            <b>Plot:</b> {{movie.4}}
+                                            <br>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
                                             </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal Add Movie  -->
+                            <div name=modal_movie class="modal fade" id="addModal{{movie}}" tabindex="-1" role="dialog"
+                                 aria-labelledby="addModalTitle"
+                                 aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addModalTitle">Add Movie to List</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            {% for movie_list in user_movie_lists %}
+                                            <form action="{% url 'add_movie' pk=movie_list.id %}" method="get">
+                                                {% csrf_token %}
+                                                {{movie.0}} <button type="submit">Add</button> to {{movie_list}}
+                                                <br>
+                                             </form>
+                                            {% endfor %}
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
