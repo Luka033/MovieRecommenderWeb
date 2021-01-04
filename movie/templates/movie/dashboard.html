@@ -7,15 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Movie Recommender</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 
 
 </head>
 
 <body>
 {% include 'movie/navbar.html' %}
+
+
 
 <section class="hero is-primary">
     <div class="hero-body">
@@ -51,6 +51,11 @@
     <div class="container">
         <div class="columns">
             <div class="column is-offset-4 is-4">
+
+                {% for message in messages %}
+                    <p>{{message}}</p>
+                {% endfor %}
+
                 {% if movies %}
                 <div class="box">
                     <table class="table table-bordered">
@@ -123,7 +128,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="addModalTitle">Add Movie to List</h5>
+                                            <h5 class="modal-title" id="addModalTitle">Add {{movie.0}} to List</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -131,15 +136,16 @@
                                         <div class="modal-body">
 
                                             {% for movie_list in user_movie_lists %}
-                                            <form action="{% url 'add_movie' movie_list.id%}" method="GET">
-                                                <button name="movie" value="{{ movie.0 }}">{{ movie_list }}</button>
+                                            <form action="{% url 'add_movie' movie_list.id %}" method="GET">
+                                                <button name="movie" value="{{ movie.0 }}" onclick="return confirm('Do You Want to Add {{movie.0}} to {{movie_list}}?')">{{ movie_list }}</button>
                                                 <br>
                                             </form>
                                             {% endfor %}
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -164,15 +170,4 @@
 
 
 </body>
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-
 </html>

@@ -10,10 +10,18 @@
 <body>
 {% include 'movie/navbar.html' %}
 
+<script>
+function clicked(e)
+{
+    if(!confirm('Are you sure?')) {
+        e.preventDefault();
+    }
+}
+</script>
+
 
 <table class="table table-bordered">
     <thead>
-
     <tr>
         <th scope="col">#</th>
         <th scope="col">Movie</th>
@@ -21,17 +29,51 @@
     </tr>
     </thead>
     <tbody>
+
     {% for movie in movies_in_list %}
-    <tr>
-        <th scope="row">{{ forloop.counter }}</th>
-        <td><a href="http://127.0.0.1:8000/?name={{ movie }}">{{ movie }}</a></td>
-        <td><a href="">Add</a></td>
-    </tr>
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td><a type="button" data-toggle="modal" data-target="#myModal{{movie}}">{{movie.name}}</a></td>
+            <td><a href="{% url 'remove_movie' movie.id %}" onclick="clicked(event)">Remove</a></td>
 
-    </tbody>
+
+
+
+        </tr>
+
+        <!-- Modal Movie Info-->
+        <div class="modal fade" id="myModal{{movie}}" tabindex="-1" role="dialog"
+             aria-labelledby="myModalTitle"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalTitle">Movie Info</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <b>Title:</b> {{movie.name}}
+                        <br>
+                        <b>Director:</b> {{movie.director}}
+                        <br>
+                        <b>Cast:</b> {{movie.cast}}
+                        <br>
+                        <b>Rating:</b> {{movie.rating}}
+                        <br>
+                        <b>Plot:</b> {{movie.plot}}
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endfor %}
+    </tbody>
 </table>
-
-
 </body>
 </html>

@@ -10,44 +10,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
-@login_required(login_url='login')
-def movie_lists(request):
-    user = User.objects.get(id=request.user.id)
-    user_movie_lists = user.movielist_set.all().order_by('list_name')
-
-    context = {'user_movie_lists': user_movie_lists}
-    return render(request, 'movie/movie_lists.html', context)
-
-@login_required(login_url='login')
-def movies(request, pk):
-    movie_list = MovieList.objects.get(id=pk)
-    movies_in_list = movie_list.movie_set.all().order_by('name')
-
-
-    context = {'movies_in_list': movies_in_list}
-    return render(request, 'movie/movies.html', context)
-
-
-@login_required(login_url='login')
-def create_list(request):
-    form1 = CreateListForm()
-    if request.method == 'POST':
-        user = User.objects.get(id=request.user.id)
-        form = CreateListForm(request.POST)
-        if form.is_valid():
-            form1 = form.save(commit=False)
-            form1.user_name = user
-            form1.save()
-
-        return redirect('movie_lists')
-
-    context = {'form': form1}
-    return render(request, 'movie/create_list.html', context)
-
-
-
-
+###################### LOGIN AND REGISTRATION ######################
+####################################################################
 def register_page(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -82,52 +46,52 @@ def login_page(request):
         context = {}
         return render(request, 'movie/login.html', context)
 
+
 def logout_user(request):
     logout(request)
     return redirect('home')
 
 
+
+###################### CRUD MOVIES & MOVIE LISTS ###################
+####################################################################
+@login_required(login_url='login')
 def add_movie(request, pk):
-    print(request.GET['movie'])
-    print("MOVIE LIST: ", pk)
+    movie_name = request.GET['movie']
+    movie_list = MovieList.objects.get(id=pk)
 
-
-
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))
-
-
-
-
-def search_movie(request):
-
-    info_for_all_movies = []
     recommender = MovieRecommender()
-    form = MovieForm(request.POST)
+    movie_info = recommender.get_movie_info(str(movie_name))
 
-    if request.user.is_authenticated:
-        user = User.objects.get(id=request.user.id)
-        user_movie_lists = user.movielist_set.all().order_by('list_name')
+    added_movie = Movie(movie_list=movie_list,
+                        name=movie_name,
+                        director=movie_info[1],
+                        cast=movie_info[2],
+                        rating=movie_info[3],
+                        plot=movie_info[4])
+    added_movie.save()
+    return HttpResponse('<script>history.back();</script>')
+
+@login_required(login_url='login')
+def remove_movie(request, pk):
+    Movie.objects.get(id=pk).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+def create_list(request):
+    form1 = CreateListForm()
     if request.method == 'POST':
+        user = User.objects.get(id=request.user.id)
+        form = CreateListForm(request.POST)
+        if form.is_valid():
+            form1 = form.save(commit=False)
+            form1.user_name = user
+            form1.save()
 
-        if 'search_movie' in request.POST:
-            movie = request.POST.get('name')
-            movies = recommender.recommend_movie(movie)
-            for movie in movies:
-                movie_info = recommender.get_movie_info(movie)
-                info_for_all_movies.append(movie_info)
+        return redirect('movie_lists')
 
-    if request.user.is_authenticated:
-        context = {'movies': info_for_all_movies,
-                   'user_movie_lists': user_movie_lists,
-                   'form': form}
-    else:
-        context = {'movies': info_for_all_movies,
-                   'form': form}
-    return render(request, 'movie/dashboard.html', context)
-
-
+    context = {'form': form1}
+    return render(request, 'movie/create_list.html', context)
 
 @login_required(login_url='login')
 def delete_list(request, pk):
@@ -139,3 +103,49 @@ def delete_list(request, pk):
 
     context = {'list_to_delete': list_to_delete}
     return render(request, 'movie/delete_list.html', context)
+
+
+
+###################### SEARCH AND DISPLAY MOVIES ###################
+####################################################################
+def search_movie(request):
+    info_for_all_movies = []
+    recommender = MovieRecommender()
+    form = MovieForm(request.POST)
+    user_movie_lists = ''
+
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        user_movie_lists = user.movielist_set.all().order_by('list_name')
+
+    if request.method == 'POST':
+        if 'search_movie' in request.POST:
+            movie = request.POST.get('name')
+            movies = recommender.recommend_movie(movie)
+            for movie in movies:
+                movie_info = recommender.get_movie_info(movie)
+                info_for_all_movies.append(movie_info)
+
+    context = {'movies': info_for_all_movies,
+               'user_movie_lists': user_movie_lists,
+               'form': form}
+
+    return render(request, 'movie/dashboard.html', context)
+
+
+@login_required(login_url='login')
+def movie_lists(request):
+    user = User.objects.get(id=request.user.id)
+    user_movie_lists = user.movielist_set.all().order_by('list_name')
+
+    context = {'user_movie_lists': user_movie_lists}
+    return render(request, 'movie/movie_lists.html', context)
+
+
+@login_required(login_url='login')
+def movies(request, pk):
+    movie_list = MovieList.objects.get(id=pk)
+    movies_in_list = movie_list.movie_set.all().order_by('name')
+
+    context = {'movies_in_list': movies_in_list}
+    return render(request, 'movie/movies.html', context)

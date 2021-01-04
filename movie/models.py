@@ -15,6 +15,10 @@ class MovieList(models.Model):
 class Movie(models.Model):
     movie_list = models.ForeignKey(MovieList, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
+    director = models.CharField(max_length=200, null=True)
+    cast = models.CharField(max_length=200, null=True)
+    rating = models.CharField(max_length=200, null=True)
+    plot = models.CharField(max_length=500, null=True)
 
     def __str__(self):
         return self.name
