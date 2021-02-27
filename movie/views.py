@@ -72,6 +72,7 @@ def add_movie(request, pk):
     added_movie.save()
     return HttpResponse('<script>history.back();</script>')
 
+
 @login_required(login_url='login')
 def remove_movie(request, pk):
     Movie.objects.get(id=pk).delete()
