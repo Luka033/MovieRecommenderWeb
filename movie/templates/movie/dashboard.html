@@ -33,6 +33,11 @@
             width: 750px;
         }
 
+        .box {
+            padding: 20px !important;
+            padding-bottom: 5px !important;
+        }
+
         .columns {
             display: flex;
             justify-content: center;
@@ -54,7 +59,11 @@
         .add-movie-button {
             background: #ff5233;
             color: white;
-            padding: 10px 25px !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 53px;
+            padding: 0 25px !important;
             font-weight: 500;
             border: none !important;
             outline: none;
@@ -126,7 +135,7 @@
                                 <!--                        hello-->
                                 {% for movie in movies %}
                                 <tr>
-                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <th class="text-center" scope="row">{{ forloop.counter }}</th>
                                     <!--                            <td><a href="http://127.0.0.1:8000/?name={{ movie }}">{{ movie }}</a></td>-->
                                     <td class="movie-title">
                                         <a type="button" data-toggle="modal" data-target="#myModal{{movie}}">
