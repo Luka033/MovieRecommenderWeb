@@ -22,7 +22,7 @@
 		.user_card {
 			width: 350px;
 			margin: auto 0;
-			background: #517f88;
+			background: #74b3c0;
 			position: relative;
 			display: flex;
 			justify-content: center;
@@ -46,10 +46,11 @@
 			color: white !important;
 			border: none !important;
 			outline: none !important;
-			font-size: 25px;
+			border-radius: 10px;
+			font-size: 20px;
 			margin: 0 0 5px 0;
-			padding: 5px 10px;
-			transition: 0.15s;
+			padding: 10px 10px;
+			transition: 0.125s;
 		}
 
 		.login_btn:hover {
@@ -79,12 +80,18 @@
 		}
 
 		.form-input {
-			padding: 5px 0 5px 10px;
-			border: none;
+			background: rgb(250, 250, 250);
+			margin: 0;
+			padding: 7.5px 0 7.5px 10px;
+			border: 5px solid rgb(175, 175, 175);
 			outline: none !important;
-			border-radius: 0 5px 5px 0 !important;
+			border-radius: 12.5px !important;
 			font-size: 17px;
 			flex: 1;
+		}
+
+		.form-input::placeholder {
+			color: rgb(175, 175, 175);
 		}
 
 		.no-account {
@@ -96,12 +103,12 @@
 		}
 
 		.sign-up:hover {
-			color: #dd492e;
+			color: #ff5233;
 		}
 
 		#messages {
 			color: white;
-			font-weight: 600;
+			font-weight: 500;
 			margin-top: 10px;
 			font-size: 20px;
 			text-align: center;
@@ -123,16 +130,10 @@
 					<form class="w-100" method="POST" action="">
 						{% csrf_token %}
 						<div class="input-group mb-3">
-							<div class="input-group-append">
-								<span class="input-group-text"><i class="fas fa-user"></i></span>
-							</div>
-							<input type="text" name="username" placeholder="Username..." class="form-input">
+							<input type="text" name="username" placeholder="Username" class="form-input">
 						</div>
 						<div class="input-group mb-2">
-							<div class="input-group-append">
-								<span class="input-group-text"><i class="fas fa-key"></i></span>
-							</div>
-							<input type="password" name="password" placeholder="Password..." class="form-input">
+							<input type="password" name="password" placeholder="Password" class="form-input">
 						</div>
 
 						<div class="d-flex justify-content-center mt-3 login_container">

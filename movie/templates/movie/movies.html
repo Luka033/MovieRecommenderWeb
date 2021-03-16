@@ -1,79 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Your Movie Lists</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+
+    <style>
+        html,
+        body {
+            width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            animation: fade-in 0.5s ease-out;
+
+            --table-row-height: 45px;
+        }
+
+        body {
+            background: linear-gradient(90deg, rgb(22, 199, 199), rgb(217, 0, 255));
+        }
+
+        .container {
+            width: 40vw !important;
+            margin: 0 auto;
+        }
+
+        h5 {
+            color: white;
+            margin: 25px 0 15px 0 !important;
+            font-size: 1.75rem !important;
+            text-align: center;
+        }
+
+        .movie-index {
+            width: 30px;
+            font-weight: 700;
+            line-height: 0 !important;
+            vertical-align: middle !important;
+        }
+
+        .movie-name {
+            font-size: 22px;
+            line-height: var(--table-row-height);
+            text-indent: 10px;
+        }
+
+        .movie-name a {
+            color: black;
+        }
+
+        .movie-name a:hover {
+            color: gray;
+            text-decoration: none;
+        }
+
+        .delete-button-container {
+            width: 150px;
+        }
+
+        .delete-button {
+            background: #ff5233;
+            color: white !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: var(--table-row-height);
+            font-size: 20px;
+            font-weight: 500;
+            border: none !important;
+            outline: none;
+            border-radius: 25px;
+            transition: background 0.15s;
+        }
+
+        .delete-button:hover {
+            background: #da462c;
+            text-decoration: none;
+        }
+    </style>
 </head>
+
 <body>
-{% include 'movie/navbar.html' %}
+    {% include 'movie/navbar.html' %}
 
-<script>
-function clicked(e)
-{
-    if(!confirm('Are you sure?')) {
-        e.preventDefault();
-    }
-}
-</script>
+    <script>
+        function clicked(e) {
+            if (!confirm('Are you sure?')) {
+                e.preventDefault();
+            }
+        }
+    </script>
 
+    <div class="container">
+        <h5>Movies:</h5>
 
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Movie</th>
-        <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
+        <div class="card card-body">
+            <table class="table">
+                <tbody>
 
-    {% for movie in movies_in_list %}
-        <tr>
-            <th scope="row">{{ forloop.counter }}</th>
-            <td><a type="button" data-toggle="modal" data-target="#myModal{{movie}}">{{movie.name}}</a></td>
-            <td><a href="{% url 'remove_movie' movie.id %}" onclick="clicked(event)">Remove</a></td>
+                    {% for movie in movies_in_list %}
+                    <tr>
+                        <td class="movie-index" scope="row">{{ forloop.counter }}</td>
+                        <td class="movie-name"><a type="button" data-toggle="modal"
+                                data-target="#myModal{{movie}}">{{movie.name}}</a></td>
+                        <td class="delete-button-container"><a class="delete-button"
+                                href="{% url 'remove_movie' movie.id %}" onclick="clicked(event)">Remove</a></td>
 
 
 
 
-        </tr>
+                    </tr>
 
-        <!-- Modal Movie Info-->
-        <div class="modal fade" id="myModal{{movie}}" tabindex="-1" role="dialog"
-             aria-labelledby="myModalTitle"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="myModalTitle">Movie Info</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <!-- Modal Movie Info-->
+                    <div class="modal fade" id="myModal{{movie}}" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalTitle">Movie Info</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <b>Title:</b> {{movie.name}}
+                                    <br>
+                                    <b>Director:</b> {{movie.director}}
+                                    <br>
+                                    <b>Cast:</b> {{movie.cast}}
+                                    <br>
+                                    <b>Rating:</b> {{movie.rating}}
+                                    <br>
+                                    <b>Plot:</b> {{movie.plot}}
+                                    <br>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <b>Title:</b> {{movie.name}}
-                        <br>
-                        <b>Director:</b> {{movie.director}}
-                        <br>
-                        <b>Cast:</b> {{movie.cast}}
-                        <br>
-                        <b>Rating:</b> {{movie.rating}}
-                        <br>
-                        <b>Plot:</b> {{movie.plot}}
-                        <br>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                        </button>
-                    </div>
-                </div>
-            </div>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-    {% endfor %}
-    </tbody>
-</table>
+    </div>
 </body>
+
 </html>

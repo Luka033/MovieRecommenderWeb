@@ -9,23 +9,12 @@
     <title>Movie Recommender</title>
 
     <style>
-        @keyframes fade-in {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
         html,
         body {
             width: 100vw;
             min-height: 100vh;
             margin: 0;
             padding: 0;
-            animation: fade-in 0.5s ease-out;
         }
 
         body {
@@ -114,11 +103,35 @@
             border: none !important;
             outline: none;
             border-radius: 25px;
-            transition: 0.15s;
+            transition: background 0.15s;
         }
 
         .add-movie-button:hover {
             background: #da462c;
+        }
+
+        .modal-header {
+            background: rgb(147, 147, 211);
+            padding: 20px 16px !important;
+        }
+
+        .modal-title {
+            color: white;
+        }
+
+        .modal-footer {
+            border: none !important;
+            padding-top: 0 !important;
+        }
+
+        .close-button {
+            background: #ff5233 !important;
+            padding: 8px 25px !important;
+            font-size: 18px !important;
+        }
+
+        .close-button:hover {
+            background: #da462c !important;
         }
     </style>
 </head>
@@ -165,16 +178,13 @@
                     Add
                 </a>
 
-                <!-- Modal Movie Info-->
+                <!-- Modal Movie Info -->
                 <div class="modal fade" id="myModal{{movie}}" tabindex="-1" role="dialog" aria-labelledby="myModalTitle"
                     aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="myModalTitle">Movie Info</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
                             </div>
                             <div class="modal-body">
                                 <b>Title:</b> {{movie.0}}
@@ -189,14 +199,14 @@
                                 <br>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                <button type="button" class="close-button btn btn-secondary" data-dismiss="modal">Close
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Modal Add Movie  -->
+                <!-- Modal Add Movie -->
                 <div name=modal_movie class="modal fade" id="addModal{{movie}}" tabindex="-1" role="dialog"
                     aria-labelledby="addModalTitle" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -204,9 +214,6 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addModalTitle">Add {{movie.0}} to List
                                 </h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
                             </div>
                             <div class="modal-body">
 
@@ -221,7 +228,8 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="close-button btn btn-secondary"
+                                    data-dismiss="modal">Close</button>
 
                             </div>
                         </div>
