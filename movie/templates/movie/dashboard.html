@@ -11,24 +11,64 @@
     <style>
         html,
         body {
+            background: black !important;
+            position: relative;
             width: 100vw;
             min-height: 100vh;
             margin: 0;
             padding: 0;
+            z-index: -100;
         }
 
-        body {
-            background: linear-gradient(90deg, rgb(22, 199, 199), rgb(217, 0, 255));
+        .background {
+            /*background: linear-gradient(135deg, rgb(22, 199, 199), rgb(217, 0, 255));*/
+            background: linear-gradient(135deg, rgb(47, 47, 47), rgb(3, 4, 59));
+
+            /*background-image: url('/static/images/smokeTexture.png');*/
+            /*background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;*/
+
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -99;
+            opacity: 1;
         }
 
-        .container {
-            margin: 0 auto 20px auto !important;
+        .welcome-text {
+            color: white;
+            width: 50vw;
+            margin: 100px auto 0 auto;
+            font-size: 40px;
+            text-align: center;
+        }
+
+        .search-bar-container {
+            margin: 20px auto 20px auto !important;
             padding: 0 !important;
         }
 
         .search-bar {
             margin: 0 auto;
             width: 600px;
+        }
+
+        .search-button {
+            background: #ff5233;
+            color: white;
+            height: 100%;
+            padding: 0 20px;
+            font-size: 18px;
+            border: none;
+            outline: none !important;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .search-button:hover {
+            background: #da462c;
         }
 
         .section {
@@ -60,7 +100,7 @@
         .movie-poster {
             background: transparent;
             width: 100%;
-            transition: 0.2s;
+            transition: 0.15s;
         }
 
         .movie-poster-container:hover>.movie-poster {
@@ -111,12 +151,19 @@
         }
 
         .modal-header {
-            background: rgb(147, 147, 211);
-            padding: 20px 16px !important;
+            background: #ff5233;
+            display: flex;
+            flex-direction: column;
+            justify-content: center !important;
+            height: 100px;
+            padding: 0 !important;
         }
 
         .modal-title {
             color: white;
+            margin-left: 20px;
+            font-size: 25px;
+            font-weight: 500;
         }
 
         .modal-footer {
@@ -139,8 +186,10 @@
 <body>
     {% include 'movie/navbar.html' %}
 
+    <div class="background"></div>
+
     <section class="section">
-        <div class="container">
+        <div class="search-bar-container">
             <div class="search-bar">
                 <form method="POST">
                     <div class="field has-addons">
@@ -149,7 +198,7 @@
                             {{form.name}}
                         </div>
                         <div class="control">
-                            <button type="submit" name="search_movie" class="button is-info">Search</button>
+                            <button type="submit" name="search_movie" class="search-button">Search</button>
                         </div>
                     </div>
                 </form>
@@ -212,8 +261,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addModalTitle">Add {{movie.0}} to List
-                                </h5>
+                                <h5 class="modal-title" id="addModalTitle">Add {{movie.0}} to List</h5>
                             </div>
                             <div class="modal-body">
 
@@ -238,6 +286,8 @@
             </div>
             {% endfor %}
         </div>
+        {% else %}
+        <h1 class="welcome-text">Find your favorite movies in our collection of over 85.000 movies!</h1>
         {% endif %}
     </section>
 </body>
