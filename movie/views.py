@@ -52,6 +52,7 @@ def logout_user(request):
     return redirect('home')
 
 
+
 ###################### CRUD MOVIES & MOVIE LISTS ###################
 ####################################################################
 @login_required(login_url='login')
@@ -70,7 +71,6 @@ def add_movie(request, pk):
                         plot=movie_info[4])
     added_movie.save()
     return HttpResponse('<script>history.back();</script>')
-
 
 @login_required(login_url='login')
 def remove_movie(request, pk):
@@ -93,7 +93,6 @@ def create_list(request):
     context = {'form': form1}
     return render(request, 'movie/create_list.html', context)
 
-
 @login_required(login_url='login')
 def delete_list(request, pk):
     list_to_delete = MovieList.objects.get(id=pk)
@@ -104,6 +103,7 @@ def delete_list(request, pk):
 
     context = {'list_to_delete': list_to_delete}
     return render(request, 'movie/delete_list.html', context)
+
 
 
 ###################### SEARCH AND DISPLAY MOVIES ###################

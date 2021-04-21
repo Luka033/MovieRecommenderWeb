@@ -1,37 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Your Movie Lists</title>
 
+    <style>
+        html,
+        body {
+            width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            animation: fade-in 0.5s ease-out;
+
+            --table-row-height: 45px;
+        }
+
+        body {
+            background: linear-gradient(135deg, rgb(47, 47, 47), rgb(3, 4, 59));
+        }
+
+        h5 {
+            color: white;
+            margin: 25px 0 15px 0 !important;
+            font-size: 1.75rem !important;
+            text-align: center;
+        }
+
+        .container {
+            width: 40vw !important;
+            margin: 0 auto;
+        }
+
+        .button-template {
+            background: black;
+            color: white !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: var(--table-row-height);
+            font-size: 20px;
+            font-weight: 500;
+            border: none !important;
+            outline: none;
+            border-radius: 25px;
+            transition: background 0.15s;
+        }
+
+        .create-movie-list-button {
+            background: #ff5233;
+            height: 50px;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        .create-movie-list-button:hover {
+            background: #da462c;
+            text-decoration: none;
+        }
+
+        table {
+            margin-top: 10px;
+        }
+
+        .list-name {
+            font-size: 22px;
+            line-height: var(--table-row-height);
+            text-indent: 10px;
+        }
+
+        .list-name a {
+            color: black;
+        }
+
+        .list-name a:hover {
+            color: gray;
+            text-decoration: none;
+        }
+
+        .delete-button-container {
+            width: 150px;
+        }
+
+        .delete-button {
+            background: #ff5233;
+        }
+
+        .delete-button:hover {
+            background: #da462c;
+            text-decoration: none;
+        }
+    </style>
 </head>
+
 <body>
 
-{% include 'movie/navbar.html' %}
+    {% include 'movie/navbar.html' %}
 
-<div class="col-md-5">
-    <h5>Your Movie Lists:</h5>
-    <hr>
-    <div class="card card-body">
-        <a class="btn btn-primary  btn-sm btn-block" href="{% url 'create_list' %}">Create New Movie List</a>
-        <table class="table table-sm">
-            <tr>
-				<th>View</th>
-                <th>Movie list</th>
-				<th>Remove</th>
-            </tr>
+    <div class="container">
+        <h5>Your Movie Lists:</h5>
+        <div class="card card-body">
+            <a class="button-template create-movie-list-button" href="{% url 'create_list' %}">Create New Movie List</a>
+            <table class="table table-sm">
+                {% for list in user_movie_lists %}
+                <tr>
+                    <td class="list-name"><a href="{% url 'movies' list.id %}">{{list}}</a></td>
+                    <td class="delete-button-container"><a class="button-template delete-button"
+                            href="{% url 'delete_list' list.id %}">Delete</a></td>
+                </tr>
+                {% endfor %}
 
-            {% for list in user_movie_lists %}
-            <tr>
-                <td><a class="btn btn-sm btn-info" href="{% url 'movies' list.id %}">View</a></td>
-                <td>{{list}}</td>
-				<td><a class="btn btn-sm btn-danger" href="{% url 'delete_list' list.id %}">Delete</a></td>
-            </tr>
-            {% endfor %}
-
-        </table>
+            </table>
+        </div>
     </div>
-</div>
 </body>
-
-

@@ -8,28 +8,189 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Movie Recommender</title>
 
+    <style>
+        html,
+        body {
+            background: black !important;
+            position: relative;
+            width: 100vw;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            z-index: -100;
+        }
 
+        .background {
+            /*background: linear-gradient(135deg, rgb(22, 199, 199), rgb(217, 0, 255));*/
+            background: linear-gradient(135deg, rgb(47, 47, 47), rgb(3, 4, 59));
 
+            /*background-image: url('/static/images/smokeTexture.png');*/
+            /*background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;*/
+
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -99;
+            opacity: 1;
+        }
+
+        .welcome-text {
+            color: white;
+            width: 50vw;
+            margin: 100px auto 0 auto;
+            font-size: 40px;
+            text-align: center;
+        }
+
+        .search-bar-container {
+            margin: 20px auto 20px auto !important;
+            padding: 0 !important;
+        }
+
+        .search-bar {
+            margin: 0 auto;
+            width: 600px;
+        }
+
+        .search-button {
+            background: #ff5233;
+            color: white;
+            height: 100%;
+            padding: 0 20px;
+            font-size: 18px;
+            border: none;
+            outline: none !important;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .search-button:hover {
+            background: #da462c;
+        }
+
+        .section {
+            padding: 0 !important;
+        }
+
+        .movies {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100vw;
+        }
+
+        .movie {
+            margin: 40px 50px;
+            width: 350px;
+        }
+
+        .movie-poster-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 450px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .movie-poster {
+            background: transparent;
+            width: 100%;
+            transition: 0.15s;
+        }
+
+        .movie-poster-container:hover>.movie-poster {
+            transform: scale(1.125);
+        }
+
+        .movie-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .movie-title,
+        .movie-rating {
+            color: white;
+            margin: 0 12.5px;
+            font-size: 22px;
+        }
+
+        .movie-rating {
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+        .movie-rating {
+            text-align: center;
+        }
+
+        .add-movie-button {
+            background: #ff5233;
+            color: white !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 53px;
+            padding: 0 25px !important;
+            font-size: 25px;
+            font-weight: 500;
+            border: none !important;
+            outline: none;
+            border-radius: 25px;
+            transition: background 0.15s;
+        }
+
+        .add-movie-button:hover {
+            background: #da462c;
+        }
+
+        .modal-header {
+            background: #ff5233;
+            display: flex;
+            flex-direction: column;
+            justify-content: center !important;
+            height: 100px;
+            padding: 0 !important;
+        }
+
+        .modal-title {
+            color: white;
+            margin-left: 20px;
+            font-size: 25px;
+            font-weight: 500;
+        }
+
+        .modal-footer {
+            border: none !important;
+            padding-top: 0 !important;
+        }
+
+        .close-button {
+            background: #ff5233 !important;
+            padding: 8px 25px !important;
+            font-size: 18px !important;
+        }
+
+        .close-button:hover {
+            background: #da462c !important;
+        }
+    </style>
 </head>
 
 <body>
-{% include 'movie/navbar.html' %}
+    {% include 'movie/navbar.html' %}
 
+    <div class="background"></div>
 
-
-<section class="hero is-primary">
-    <div class="hero-body">
-        <div class="container">
-            <h1 class="title">
-                What movie would you like to find?
-            </h1>
-        </div>
-    </div>
-</section>
-<section class="section">
-    <div class="container">
-        <div class="columns">
-            <div class="column is-offset-4 is-4">
+    <section class="section">
+        <div class="search-bar-container">
+            <div class="search-bar">
                 <form method="POST">
                     <div class="field has-addons">
                         <div class="control is-expanded">
@@ -37,139 +198,98 @@
                             {{form.name}}
                         </div>
                         <div class="control">
-                            <button type="submit" name="search_movie" class="button is-info">
-                                Search Movie
-                            </button>
+                            <button type="submit" name="search_movie" class="search-button">Search</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
-</section>
-<section class="section">
-    <div class="container">
-        <div class="columns">
-            <div class="column is-offset-4 is-4">
+    </section>
+    <section class="section">
+        {% for message in messages %}
+        <p>{{message}}</p>
+        {% endfor %}
 
-                {% for message in messages %}
-                    <p>{{message}}</p>
-                {% endfor %}
+        {% if movies %}
+        <div class="movies">
+            {% for movie in movies %}
+            <div class="movie">
+                <a class="movie-poster-container" type="button" data-toggle="modal" data-target="#myModal{{movie}}">
+                    <img class="movie-poster" src="/static/images/jokerPoster.png" alt="Movie Poster">
+                </a>
 
-                {% if movies %}
-                <div class="box">
-                    <table class="table table-bordered">
-                        <thead>
-
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Movie</th>
-                            <th scope="col">Rating</th>
-                            <th scope="col"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <!--                        hello-->
-                        {% for movie in movies %}
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <!--                            <td><a href="http://127.0.0.1:8000/?name={{ movie }}">{{ movie }}</a></td>-->
-                            <td>
-                                <a type="button" data-toggle="modal"
-                                   data-target="#myModal{{movie}}">
-                                    {{movie.0}}
-                                </a>
-                            </td>
-                            <td>{{movie.3}}</td>
-                            <td>
-                                <a type="button" data-toggle="modal"
-                                   data-target="#addModal{{movie}}">
-                                    Add
-                                </a>
-                            </td>
-
-
-                            <!-- Modal Movie Info-->
-                            <div class="modal fade" id="myModal{{movie}}" tabindex="-1" role="dialog"
-                                 aria-labelledby="myModalTitle"
-                                 aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="myModalTitle">Movie Info</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <b>Title:</b> {{movie.0}}
-                                            <br>
-                                            <b>Director:</b> {{movie.1}}
-                                            <br>
-                                            <b>Cast:</b> {{movie.2}}
-                                            <br>
-                                            <b>Rating:</b> {{movie.3}}
-                                            <br>
-                                            <b>Plot:</b> {{movie.4}}
-                                            <br>
-                                            <b>Image:</b> {{movie.5}}
-                                            <br>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Modal Add Movie  -->
-                            <div name=modal_movie class="modal fade" id="addModal{{movie}}" tabindex="-1" role="dialog"
-                                 aria-labelledby="addModalTitle"
-                                 aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="addModalTitle">Add {{movie.0}} to List</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            {% for movie_list in user_movie_lists %}
-                                            <form action="{% url 'add_movie' movie_list.id %}" method="GET">
-                                                <button name="movie" value="{{ movie.0 }}" onclick="return confirm('Do You Want to Add {{movie.0}} to {{movie_list}}?')">{{ movie_list }}</button>
-                                                <br>
-                                            </form>
-                                            {% endfor %}
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </tr>
-
-                        </tbody>
-                        {% endfor %}
-                    </table>
+                <div class="movie-info">
+                    <p class="movie-title">{{movie.0}}</p>
+                    <p class="movie-rating">{{movie.3}}</p>
                 </div>
-                {% endif %}
+
+                <a class="add-movie-button" type="button" data-toggle="modal" data-target="#addModal{{movie}}">
+                    Add
+                </a>
+
+                <!-- Modal Movie Info -->
+                <div class="modal fade" id="myModal{{movie}}" tabindex="-1" role="dialog" aria-labelledby="myModalTitle"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myModalTitle">Movie Info</h5>
+                            </div>
+                            <div class="modal-body">
+                                <b>Title:</b> {{movie.0}}
+                                <br>
+                                <b>Director:</b> {{movie.1}}
+                                <br>
+                                <b>Cast:</b> {{movie.2}}
+                                <br>
+                                <b>Rating:</b> {{movie.3}}
+                                <br>
+                                <b>Plot:</b> {{movie.4}}
+                                <br>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="close-button btn btn-secondary" data-dismiss="modal">Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Add Movie -->
+                <div name=modal_movie class="modal fade" id="addModal{{movie}}" tabindex="-1" role="dialog"
+                    aria-labelledby="addModalTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addModalTitle">Add {{movie.0}} to List</h5>
+                            </div>
+                            <div class="modal-body">
+
+                                {% for movie_list in user_movie_lists %}
+                                <form action="{% url 'add_movie' movie_list.id %}" method="GET">
+                                    <button name="movie" value="{{ movie.0 }}"
+                                        onclick="return confirm('Do You Want to Add {{movie.0}} to {{movie_list}}?')">{{
+                                        movie_list }}</button>
+                                    <br>
+                                </form>
+                                {% endfor %}
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="close-button btn btn-secondary"
+                                    data-dismiss="modal">Close</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
-    </div>
-</section>
-
-
-<footer class="footer">
-</footer>
-
-
+        {% else %}
+        <h1 class="welcome-text">Find your favorite movies in our collection of over 85.000 movies!</h1>
+        {% endif %}
+    </section>
 </body>
+
 </html>

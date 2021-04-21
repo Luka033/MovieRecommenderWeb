@@ -1,52 +1,70 @@
 <style>
-  .hello-msg {
-    font-size: 18px;
-    color: #fff;
+  .navbar {
+    background: transparent !important;
+  }
+
+  .title {
+    color: white !important;
+    margin: 0 25px 0 0 !important;
+    padding: 0 !important;
+    font-size: 25px !important;
+    text-decoration: none !important;
+  }
+
+  .nav-text,
+  .nav-text-hover {
+    color: white !important;
     margin-right: 20px;
+    padding: 0 !important;
+    font-size: 22px;
+    font-weight: 500;
+  }
+
+  .nav-text-hover:hover {
+    color: #ff5233 !important;
+    text-decoration: none;
   }
 </style>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Movie Recommender</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg">
+  <a class="title" href="#">Movie Recommender</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link nav-text-hover" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
       </li>
       {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'movie_lists' %}">Your Movies</a>
-        </li>
+      <li class="nav-item">
+        <a class="nav-link nav-text-hover" href="{% url 'movie_lists' %}">Your Movies</a>
+      </li>
       {% endif %}
     </ul>
   </div>
 
   {% if user.is_authenticated %}
-    <span class="hello-msg">Hello, {{request.user}}</span>
-    <span><a class="hello-msg" href="{% url 'logout' %}">Logout</a></span>
+  <span class="nav-text">Hello, {{request.user}}</span>
+  <span><a class="nav-text-hover" href="{% url 'logout' %}">Logout</a></span>
   {% else %}
-    <span><a class="hello-msg" href="{% url 'login' %}">Login</a></span>
-    <span><a class="hello-msg" href="{% url 'register' %}">Sign Up</a></span>
+  <span><a class="nav-text-hover" href="{% url 'login' %}">Login</a></span>
+  <span><a class="nav-text-hover" href="{% url 'register' %}">Sign Up</a></span>
   {% endif %}
 
 </nav>
 
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
