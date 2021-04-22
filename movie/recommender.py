@@ -5,13 +5,13 @@ import os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from movie_recommender.settings import BASE_DIR
+from movie_recommender.settings import STATICFILES_DIRS
 
 
 class MovieRecommender:
     def __init__(self):
         # Step 1: Read CSV File
-        self.df = pd.read_csv(os.path.join(BASE_DIR, 'movie/movie_dataset.csv'))
+        self.df = pd.read_csv(os.path.join(STATICFILES_DIRS[0], 'data/IMDB_movie_posters.csv'))
 
         # Step 2: Select Features
         self.features = ['keywords', 'cast', 'genres', 'director']
@@ -33,16 +33,12 @@ class MovieRecommender:
         all_movie_info = ""
         for index, movie in enumerate(self.df['original_title']):
             if movie == requested_movie_info:
-                # all_movie_info = "Movie Title: " + str(movie) + \
-                #                 "\n\nDirector: " + str(self.df['director'][index]) + \
-                #                 "\n\nCast: " + str(self.df['cast'][index]) + \
-                #                 "\n\nRating: " + str(self.df['vote_average'][index]) + \
-                #                 "\n\nDescription: " + str(self.df['overview'][index])
                 all_movie_info = [str(movie),
                                   str(self.df['director'][index]),
                                   str(self.df['cast'][index]),
                                   str(self.df['vote_average'][index]),
-                                  str(self.df['overview'][index])
+                                  str(self.df['overview'][index]),
+                                  str(self.df['image_posters'][index])
                                   ]
 
         return all_movie_info
@@ -72,17 +68,17 @@ class MovieRecommender:
         for movie in sorted_similar_movies:
             best_movies.append(self.get_title_from_index(movie[0]))
             i = i + 1
-            if i >= 20:
+            if i >= 40:
                 break
 
         return best_movies
 
     # helper functions. Use them when needed #######
     def get_title_from_index(self, index):
-        return self.df[self.df.index == index]["title"].values[0]
+        return self.df[self.df.index == index]["original_title"].values[0]
 
     def get_index_from_title(self, title):
-        return self.df[self.df.title == title]["index"].values[0]
+        return self.df[self.df.original_title == title]["index"].values[0]
 
 
 
