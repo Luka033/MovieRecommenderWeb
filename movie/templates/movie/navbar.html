@@ -25,11 +25,9 @@
     text-decoration: none;
   }
 </style>
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
   integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
 
 <nav class="navbar navbar-expand-lg">
   <a class="title" href="#">Movie Recommender</a>
@@ -44,19 +42,19 @@
         <a class="nav-link nav-text-hover" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
       </li>
       {% if user.is_authenticated %}
-      <li class="nav-item">
-        <a class="nav-link nav-text-hover" href="{% url 'movie_lists' %}">Your Movies</a>
-      </li>
+        <li class="nav-item">
+          <a class="nav-link nav-text-hover" href="{% url 'movie_lists' %}">Your Movies</a>
+        </li>
       {% endif %}
     </ul>
   </div>
 
   {% if user.is_authenticated %}
-  <span class="nav-text">Hello, {{request.user}}</span>
-  <span><a class="nav-text-hover" href="{% url 'logout' %}">Logout</a></span>
+    <span class="nav-text">Hello, {{request.user}}</span>
+    <span><a class="nav-text-hover" href="{% url 'logout' %}">Logout</a></span>
   {% else %}
-  <span><a class="nav-text-hover" href="{% url 'login' %}">Login</a></span>
-  <span><a class="nav-text-hover" href="{% url 'register' %}">Sign Up</a></span>
+    <span><a class="nav-text-hover" href="{% url 'login' %}">Login</a></span>
+    <span><a class="nav-text-hover" href="{% url 'register' %}">Sign Up</a></span>
   {% endif %}
 
 </nav>

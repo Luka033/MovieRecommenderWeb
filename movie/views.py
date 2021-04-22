@@ -62,7 +62,8 @@ def add_movie(request, pk):
 
     recommender = MovieRecommender()
     movie_info = recommender.get_movie_info(str(movie_name))
-
+    print("NAME: ", movie_name)
+    print("INFO: ", movie_info)
     added_movie = Movie(movie_list=movie_list,
                         name=movie_name,
                         director=movie_info[1],

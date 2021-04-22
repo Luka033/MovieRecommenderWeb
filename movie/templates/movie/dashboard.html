@@ -215,7 +215,7 @@
             {% for movie in movies %}
             <div class="movie">
                 <a class="movie-poster-container" type="button" data-toggle="modal" data-target="#myModal{{movie}}">
-                    <img class="movie-poster" src="/static/images/jokerPoster.png" alt="Movie Poster">
+                    <img class="movie-poster" src="{{movie.5}}" alt="Movie Poster">
                 </a>
 
                 <div class="movie-info">
@@ -261,24 +261,34 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
+
                                 <h5 class="modal-title" id="addModalTitle">Add {{movie.0}} to List</h5>
                             </div>
                             <div class="modal-body">
-
-                                {% for movie_list in user_movie_lists %}
-                                <form action="{% url 'add_movie' movie_list.id %}" method="GET">
-                                    <button name="movie" value="{{ movie.0 }}"
-                                        onclick="return confirm('Do You Want to Add {{movie.0}} to {{movie_list}}?')">{{
-                                        movie_list }}</button>
-                                    <br>
-                                </form>
-                                {% endfor %}
+                                {% if user.is_authenticated %}
+                                    {% if user_movie_lists %}
+                                        {% for movie_list in user_movie_lists %}
+                                        <form action="{% url 'add_movie' movie_list.id %}" method="GET">
+                                            <button name="movie" value="{{ movie.0 }}"
+                                                onclick="return confirm('Do You Want to Add {{movie.0}} to {{movie_list}}?')">{{ movie_list }}</button>
+                                            <br>
+                                        </form>
+                                        {% endfor %}
+                                    {% else %}
+                                        <h5>You must create a movie list before you can add movies</h5>
+                                    {% endif %}
+                                {% else %}
+                                    <h5>You must be logged in to add movies</h5>
+                                {% endif %}
 
                             </div>
                             <div class="modal-footer">
+                                {% if not user_movie_lists %}
+                                    <a class="close-button btn btn-secondary" href="{% url 'movie_lists' %}">Create List</a>
+                                {% endif %}
+
                                 <button type="button" class="close-button btn btn-secondary"
                                     data-dismiss="modal">Close</button>
-
                             </div>
                         </div>
                     </div>
@@ -287,7 +297,7 @@
             {% endfor %}
         </div>
         {% else %}
-        <h1 class="welcome-text">Find your favorite movies in our collection of over 85.000 movies!</h1>
+        <h1 class="welcome-text">Find your favorite movies in our collection of over 10.000 movies!</h1>
         {% endif %}
     </section>
 </body>
