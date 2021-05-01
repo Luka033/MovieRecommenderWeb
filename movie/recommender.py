@@ -11,8 +11,9 @@ from movie_recommender.settings import STATICFILES_DIRS
 class MovieRecommender:
     def __init__(self):
         # Step 1: Read CSV File
-        self.df = pd.read_csv(os.path.join(STATICFILES_DIRS[0], 'data/IMDB_movie_posters.csv'))
-
+        self.df = pd.read_csv(os.path.join(
+            STATICFILES_DIRS[0], 'data/IMDB_movie_posters.csv'))
+        self.df = self.df.head(5000)
         # Step 2: Select Features
         self.features = ['keywords', 'cast', 'genres', 'director']
 
@@ -20,8 +21,8 @@ class MovieRecommender:
         for feature in self.features:
             self.df[feature] = self.df[feature].fillna('')
 
-        self.df['combined_features'] = self.df.apply(self.combine_features, axis=1)
-
+        self.df['combined_features'] = self.df.apply(
+            self.combine_features, axis=1)
 
     def combine_features(self, row):
         try:
@@ -43,10 +44,10 @@ class MovieRecommender:
 
         return all_movie_info
 
-
     def recommend_movie(self, movie_user_likes):
         # Find the movie most similar to users input
-        new_movie_user_likes = difflib.get_close_matches(movie_user_likes, self.df['original_title'], n=1)[0]
+        new_movie_user_likes = difflib.get_close_matches(
+            movie_user_likes, self.df['original_title'], n=1)[0]
 
         # Step 4: Create count matrix from this new combined column
         cv = CountVectorizer()
@@ -60,7 +61,8 @@ class MovieRecommender:
         similar_movies = list(enumerate(cosine_sim[movie_index]))
 
         # Step 7: Get a list of similar movies in descending order of similarity score
-        sorted_similar_movies = sorted(similar_movies, key=lambda x: x[1], reverse=True)
+        sorted_similar_movies = sorted(
+            similar_movies, key=lambda x: x[1], reverse=True)
 
         # Step 8: Print titles of first 30 movies
         best_movies = []
@@ -79,7 +81,3 @@ class MovieRecommender:
 
     def get_index_from_title(self, title):
         return self.df[self.df.original_title == title]["index"].values[0]
-
-
-
-

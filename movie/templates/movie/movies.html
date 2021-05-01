@@ -4,9 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Your Movie Lists</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
 
     <style>
         html,
@@ -25,32 +22,50 @@
         }
 
         .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             width: 40vw !important;
             margin: 0 auto;
         }
 
+        .card {
+            background: white;
+            display: flex;
+            flex-direction: column;
+            width: 40vw;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
         h5 {
             color: white;
-            margin: 25px 0 15px 0 !important;
-            font-size: 1.75rem !important;
+            margin: 25px 0 15px 0;
+            font-size: 1.75rem;
+            font-family: sans-serif;
             text-align: center;
         }
 
-        table {
-            margin: 0 !important;
+        a {
+            text-decoration: none;
+            font-family: sans-serif;
+        }
+
+        td {
+            padding: 5px 0;
         }
 
         .movie-index {
-            width: 30px;
+            font-size: 20px;
             font-weight: 700;
-            line-height: 0 !important;
-            vertical-align: middle !important;
+            font-family: sans-serif;
         }
 
         .movie-name {
             font-size: 22px;
             line-height: var(--table-row-height);
-            text-indent: 10px;
+            padding-left: 20px;
         }
 
         .movie-name a {
@@ -114,9 +129,42 @@
         }
 
         .close-button:hover {
-            background: #da462c !important;
+            background: #da462c;
+        }
+
+        .back-button {
+            background: #ff5233;
+            color: white;
+            margin-top: 25px;
+            padding: 5px 30px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            font-size: 25px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .back-button:hover {
+            background: #da462c;
+            color: white;
+            outline: none;
+            text-decoration: none;
+        }
+
+        .no-movies-message {
+            background: rgb(245, 245, 245);
+            color: black;
+            margin: 50px 0 0 0;
+            padding: 15px 30px;
+            font-size: 30px;
+            text-align: center;
+            border-radius: 5px;
         }
     </style>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
@@ -131,23 +179,19 @@
     </script>
 
     <div class="container">
+        {% if movies_in_list %}
         <h5>Movies:</h5>
 
-        <div class="card card-body">
-            <table class="table">
+        <div class="card">
+            <table>
                 <tbody>
-
                     {% for movie in movies_in_list %}
                     <tr>
-                        <td class="movie-index" scope="row">{{ forloop.counter }}</td>
+                        <td class="movie-index">{{ forloop.counter }}</td>
                         <td class="movie-name"><a type="button" data-toggle="modal"
                                 data-target="#myModal{{movie}}">{{movie.name}}</a></td>
                         <td class="delete-button-container"><a class="delete-button"
                                 href="{% url 'remove_movie' movie.id %}" onclick="clicked(event)">Remove</a></td>
-
-
-
-
                     </tr>
 
                     <!-- Modal Movie Info-->
@@ -172,8 +216,7 @@
                                     <br>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -182,6 +225,13 @@
                 </tbody>
             </table>
         </div>
+
+        <a class="back-button" href="{% url 'movie_lists' %}">Back</a>
+        {% else %}
+        <p class="no-movies-message">There are no movies here yet.</p>
+
+        <a class="back-button" href="{% url 'movie_lists' %}">Back</a>
+        {% endif %}
     </div>
 </body>
 

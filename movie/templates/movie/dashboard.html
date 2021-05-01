@@ -11,13 +11,14 @@
     <style>
         html,
         body {
-            background: black !important;
+            background: black;
             position: relative;
             width: 100vw;
             min-height: 100vh;
             margin: 0;
             padding: 0;
             z-index: -100;
+            overflow-x: hidden;
         }
 
         .background {
@@ -41,19 +42,37 @@
         .welcome-text {
             color: white;
             width: 50vw;
-            margin: 100px auto 0 auto;
+            margin: 0 auto 0 auto;
             font-size: 40px;
+            font-weight: 700;
+            font-family: sans-serif;
             text-align: center;
         }
 
-        .search-bar-container {
-            margin: 20px auto 20px auto !important;
-            padding: 0 !important;
+        .search-bar-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px auto 50px auto;
+            width: 450px;
+            height: 40px;
+            border-radius: 5px;
+            overflow: hidden;
         }
 
-        .search-bar {
-            margin: 0 auto;
-            width: 600px;
+        .search-bar-container {
+            flex: 1;
+            height: 100%;
+        }
+
+        .search-bar-container .input {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0 0 0 10px;
+            border: none;
+            outline: none;
+            font-size: 18px;
         }
 
         .search-button {
@@ -63,16 +82,20 @@
             padding: 0 20px;
             font-size: 18px;
             border: none;
-            outline: none !important;
-            border-radius: 0 5px 5px 0;
+            outline: none;
         }
 
         .search-button:hover {
             background: #da462c;
         }
 
-        .section {
-            padding: 0 !important;
+        .search-button:focus {
+            border: none;
+            outline: none;
+        }
+
+        .movies-section {
+            padding: 0;
         }
 
         .movies {
@@ -84,8 +107,12 @@
         }
 
         .movie {
+            background: rgba(0, 0, 0, 0.5);
             margin: 40px 50px;
             width: 350px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 15px 10px rgba(0, 0, 0, 0.25);
         }
 
         .movie-poster-container {
@@ -93,14 +120,13 @@
             flex-direction: column;
             justify-content: center;
             height: 450px;
-            border-radius: 10px;
             overflow: hidden;
         }
 
         .movie-poster {
             background: transparent;
             width: 100%;
-            transition: 0.15s;
+            transition: transform 0.25s;
         }
 
         .movie-poster-container:hover>.movie-poster {
@@ -109,25 +135,36 @@
 
         .movie-info {
             display: flex;
-            justify-content: space-between;
             align-items: center;
             height: 80px;
         }
 
-        .movie-title,
-        .movie-rating {
+        .movie-title {
             color: white;
-            margin: 0 12.5px;
-            font-size: 22px;
+            flex: 1;
+            margin: 0 10px;
+            font-size: 18px;
+            font-family: sans-serif;
+        }
+
+        .movie-rating-container {
+            width: 35%;
+            height: 100%;
+            margin-right: 10px;
         }
 
         .movie-rating {
-            font-size: 25px;
-            font-weight: 700;
-        }
-
-        .movie-rating {
-            text-align: center;
+            background: linear-gradient(to right, rgb(230, 230, 0) var(--rating), rgba(255, 255, 255, 0.5) 0%);
+            mask-image: url(/static/images/5Stars.png);
+            -webkit-mask-image: url(/static/images/5Stars.png);
+            mask-size: contain;
+            -webkit-mask-size: contain;
+            mask-repeat: no-repeat;
+            -webkit-mask-repeat: no-repeat;
+            mask-position: center;
+            -webkit-mask-position: center;
+            width: 100%;
+            height: 100%;
         }
 
         .add-movie-button {
@@ -137,12 +174,12 @@
             justify-content: center;
             align-items: center;
             height: 53px;
-            padding: 0 25px !important;
+            padding: 0 25px;
             font-size: 25px;
             font-weight: 500;
-            border: none !important;
+            border: none;
             outline: none;
-            border-radius: 25px;
+            border-radius: 50px;
             transition: background 0.15s;
         }
 
@@ -154,33 +191,34 @@
             background: #ff5233;
             display: flex;
             flex-direction: column;
-            justify-content: center !important;
-            height: 100px;
-            padding: 0 !important;
+            justify-content: center;
         }
 
         .modal-title {
             color: white;
-            margin-left: 20px;
+            margin-left: 10px;
             font-size: 25px;
             font-weight: 500;
         }
 
         .modal-footer {
-            border: none !important;
-            padding-top: 0 !important;
+            border: none;
+            padding-top: 0;
         }
 
         .close-button {
-            background: #ff5233 !important;
-            padding: 8px 25px !important;
-            font-size: 18px !important;
+            background: #ff5233;
+            padding: 8px 25px;
+            font-size: 18px;
         }
 
         .close-button:hover {
-            background: #da462c !important;
+            background: #da462c;
         }
     </style>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
@@ -188,24 +226,16 @@
 
     <div class="background"></div>
 
-    <section class="section">
+    <form class="search-bar-form" method="POST">
         <div class="search-bar-container">
-            <div class="search-bar">
-                <form method="POST">
-                    <div class="field has-addons">
-                        <div class="control is-expanded">
-                            {% csrf_token %}
-                            {{form.name}}
-                        </div>
-                        <div class="control">
-                            <button type="submit" name="search_movie" class="search-button">Search</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+            {% csrf_token %}
+            {{form.name}}
         </div>
-    </section>
-    <section class="section">
+
+        <button class="search-button" type="submit" name="search_movie">Search</button>
+    </form>
+
+    <section class="movies-section">
         {% for message in messages %}
         <p>{{message}}</p>
         {% endfor %}
@@ -220,7 +250,11 @@
 
                 <div class="movie-info">
                     <p class="movie-title">{{movie.0}}</p>
-                    <p class="movie-rating">{{movie.3}}</p>
+                    <!--<p class="movie-rating">{{movie.3}}</p>-->
+
+                    <div class="movie-rating-container">
+                        <div class="movie-rating" style="--rating: {% widthratio movie.3 1 10 %}%"></div>
+                    </div>
                 </div>
 
                 <a class="add-movie-button" type="button" data-toggle="modal" data-target="#addModal{{movie}}">
@@ -266,25 +300,26 @@
                             </div>
                             <div class="modal-body">
                                 {% if user.is_authenticated %}
-                                    {% if user_movie_lists %}
-                                        {% for movie_list in user_movie_lists %}
-                                        <form action="{% url 'add_movie' movie_list.id %}" method="GET">
-                                            <button name="movie" value="{{ movie.0 }}"
-                                                onclick="return confirm('Do You Want to Add {{movie.0}} to {{movie_list}}?')">{{ movie_list }}</button>
-                                            <br>
-                                        </form>
-                                        {% endfor %}
-                                    {% else %}
-                                        <h5>You must create a movie list before you can add movies</h5>
-                                    {% endif %}
+                                {% if user_movie_lists %}
+                                {% for movie_list in user_movie_lists %}
+                                <form action="{% url 'add_movie' movie_list.id %}" method="GET">
+                                    <button name="movie" value="{{ movie.0 }}"
+                                        onclick="return confirm('Do You Want to Add {{movie.0}} to {{movie_list}}?')">{{
+                                        movie_list }}</button>
+                                    <br>
+                                </form>
+                                {% endfor %}
                                 {% else %}
-                                    <h5>You must be logged in to add movies</h5>
+                                <h5>You must create a movie list before you can add movies</h5>
+                                {% endif %}
+                                {% else %}
+                                <h5>You must be logged in to add movies</h5>
                                 {% endif %}
 
                             </div>
                             <div class="modal-footer">
                                 {% if not user_movie_lists %}
-                                    <a class="close-button btn btn-secondary" href="{% url 'movie_lists' %}">Create List</a>
+                                <a class="close-button btn btn-secondary" href="{% url 'movie_lists' %}">Create List</a>
                                 {% endif %}
 
                                 <button type="button" class="close-button btn btn-secondary"

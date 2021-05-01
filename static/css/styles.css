@@ -114,6 +114,7 @@
         }
 
         .movie-rating {
+            background: yellow;
             font-size: 25px;
             font-weight: 700;
         }

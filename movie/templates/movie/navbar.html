@@ -1,68 +1,63 @@
 <style>
-  .navbar {
-    background: transparent !important;
-  }
+    nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        font-family: sans-serif;
+    }
 
-  .title {
-    color: white !important;
-    margin: 0 25px 0 0 !important;
-    padding: 0 !important;
-    font-size: 25px !important;
-    text-decoration: none !important;
-  }
+    .title {
+        color: white;
+        margin: 0 30px 0 20px !important;
+        padding: 0;
+        font-size: 25px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
 
-  .nav-text,
-  .nav-text-hover {
-    color: white !important;
-    margin-right: 20px;
-    padding: 0 !important;
-    font-size: 22px;
-    font-weight: 500;
-  }
+    .title:hover {
+        color: rgb(187, 187, 187);
+        text-decoration: none;
+    }
 
-  .nav-text-hover:hover {
-    color: #ff5233 !important;
-    text-decoration: none;
-  }
+    .spacer {
+        flex: 1;
+    }
+
+    .nav-text,
+    .nav-link {
+        color: white;
+        margin: 0 25px 0 0;
+        padding: 0;
+        font-size: 22px;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .nav-link:hover {
+        color: #ff5233;
+        text-decoration: none;
+    }
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-<nav class="navbar navbar-expand-lg">
-  <a class="title" href="#">Movie Recommender</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<nav>
+    <a class="title" href="{% url 'home' %}">Movie Recommender</a>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link nav-text-hover" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
-      </li>
-      {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link nav-text-hover" href="{% url 'movie_lists' %}">Your Movies</a>
-        </li>
-      {% endif %}
-    </ul>
-  </div>
+    <a class="nav-link" href="{% url 'home' %}">Home</a>
 
-  {% if user.is_authenticated %}
-    <span class="nav-text">Hello, {{request.user}}</span>
-    <span><a class="nav-text-hover" href="{% url 'logout' %}">Logout</a></span>
-  {% else %}
-    <span><a class="nav-text-hover" href="{% url 'login' %}">Login</a></span>
-    <span><a class="nav-text-hover" href="{% url 'register' %}">Sign Up</a></span>
-  {% endif %}
+    {% if user.is_authenticated %}
+    <a class="nav-link" href="{% url 'movie_lists' %}">Your Movies</a>
+    {% endif %}
 
+    <div class="spacer"></div>
+
+    {% if user.is_authenticated %}
+    <p class="nav-text">Hello, {{request.user}}</p>
+    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a class="nav-link" href="{% url 'login' %}">Login</a>
+    <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+    {% endif %}
 </nav>
-
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
