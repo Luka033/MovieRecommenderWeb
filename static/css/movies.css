@@ -1,0 +1,155 @@
+html,
+body {
+    width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    animation: fade-in 0.5s ease-out;
+
+    --table-row-height: 45px;
+}
+
+body {
+    background: linear-gradient(135deg, rgb(47, 47, 47), rgb(3, 4, 59));
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40vw !important;
+    margin: 0 auto;
+}
+
+.card {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    width: 40vw;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h5 {
+    color: white;
+    margin: 25px 0 15px 0;
+    font-size: 1.75rem;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    font-family: sans-serif;
+}
+
+td {
+    padding: 5px 0;
+}
+
+.movie-index {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: sans-serif;
+}
+
+.movie-name {
+    font-size: 22px;
+    line-height: var(--table-row-height);
+    padding-left: 20px;
+}
+
+.movie-name a {
+    color: black;
+}
+
+.movie-name a:hover {
+    color: gray;
+    text-decoration: none;
+}
+
+.delete-button-container {
+    width: 150px;
+}
+
+.delete-button {
+    background: #ff5233;
+    color: white !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--table-row-height);
+    font-size: 20px;
+    font-weight: 500;
+    border: none !important;
+    outline: none;
+    border-radius: 25px;
+    transition: background 0.15s;
+}
+
+.delete-button:hover {
+    background: #da462c;
+    text-decoration: none;
+}
+
+.modal-header {
+    background: #ff5233;
+    display: flex;
+    flex-direction: column;
+    justify-content: center !important;
+    height: 100px;
+    padding: 0 !important;
+}
+
+.modal-title {
+    color: white;
+    margin-left: 20px;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.modal-footer {
+    border: none !important;
+    padding-top: 0 !important;
+}
+
+.close-button {
+    background: #ff5233;
+    padding: 8px 25px;
+    font-size: 18px;
+}
+
+.close-button:hover {
+    background: #da462c;
+}
+
+.back-button {
+    background: #ff5233;
+    color: white;
+    margin-top: 25px;
+    padding: 5px 30px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    font-size: 25px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.back-button:hover {
+    background: #da462c;
+    color: white;
+    outline: none;
+    text-decoration: none;
+}
+
+.no-movies-message {
+    background: rgb(245, 245, 245);
+    color: black;
+    margin: 50px 0 0 0;
+    padding: 15px 30px;
+    font-size: 30px;
+    text-align: center;
+    border-radius: 5px;
+}

@@ -62,14 +62,14 @@ def add_movie(request, pk):
 
     recommender = MovieRecommender()
     movie_info = recommender.get_movie_info(str(movie_name))
-    print("NAME: ", movie_name)
-    print("INFO: ", movie_info)
     added_movie = Movie(movie_list=movie_list,
                         name=movie_name,
-                        director=movie_info[1],
-                        cast=movie_info[2],
-                        rating=movie_info[3],
-                        plot=movie_info[4])
+                        release_year=movie_info[1],
+                        genres=movie_info[2],
+                        director=movie_info[3],
+                        cast=movie_info[4],
+                        rating=movie_info[5],
+                        plot=movie_info[6])
     added_movie.save()
     return HttpResponse('<script>history.back();</script>')
 
@@ -80,30 +80,20 @@ def remove_movie(request, pk):
 
 
 def create_list(request):
-    form1 = CreateListForm()
-    if request.method == 'POST':
+    if request.method == "POST":
         user = User.objects.get(id=request.user.id)
-        form = CreateListForm(request.POST)
-        if form.is_valid():
-            form1 = form.save(commit=False)
-            form1.user_name = user
-            form1.save()
+        movie = request.POST.get('fname')
+        movie_list = MovieList(user_name=user,
+                               list_name=movie)
+        movie_list.save()
 
-        return redirect('movie_lists')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    context = {'form': form1}
-    return render(request, 'movie/create_list.html', context)
 
 @login_required(login_url='login')
 def delete_list(request, pk):
-    list_to_delete = MovieList.objects.get(id=pk)
-
-    if request.method == 'POST':
-        list_to_delete.delete()
-        return redirect('movie_lists')
-
-    context = {'list_to_delete': list_to_delete}
-    return render(request, 'movie/delete_list.html', context)
+    MovieList.objects.get(id=pk).delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 
@@ -111,9 +101,9 @@ def delete_list(request, pk):
 ####################################################################
 def search_movie(request):
     info_for_all_movies = []
+    user_movie_lists = ''
     recommender = MovieRecommender()
     form = MovieForm(request.POST)
-    user_movie_lists = ''
 
     if request.user.is_authenticated:
         user = User.objects.get(id=request.user.id)
@@ -122,23 +112,26 @@ def search_movie(request):
     if request.method == 'POST':
         if 'search_movie' in request.POST:
             movie = request.POST.get('name')
-            movies = recommender.recommend_movie(movie)
-            for movie in movies:
-                movie_info = recommender.get_movie_info(movie)
-                info_for_all_movies.append(movie_info)
+            movie = recommender.get_most_similar_input_movie(movie)
+            if movie:
+                movies = recommender.recommend_movie(movie)
+                for movie in movies:
+                    movie_info = recommender.get_movie_info(movie)
+                    info_for_all_movies.append(movie_info)
+            else:
+                messages.info(request, 'We apologize, We could not find similar movies. Please try another movie')
 
     context = {'movies': info_for_all_movies,
                'user_movie_lists': user_movie_lists,
                'form': form}
 
-    return render(request, 'movie/dashboard.html', context)
+    return render(request, 'movie/home.html', context)
 
 
 @login_required(login_url='login')
 def movie_lists(request):
     user = User.objects.get(id=request.user.id)
     user_movie_lists = user.movielist_set.all().order_by('list_name')
-
     context = {'user_movie_lists': user_movie_lists}
     return render(request, 'movie/movie_lists.html', context)
 

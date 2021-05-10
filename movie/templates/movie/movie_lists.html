@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,131 +6,63 @@
     <meta charset="UTF-8">
     <title>Your Movie Lists</title>
 
-    <style>
-        html,
-        body {
-            width: 100vw;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-            animation: fade-in 0.5s ease-out;
+    <link rel="stylesheet" href="{% static 'css/movie_lists.css' %}">
 
-            --table-row-height: 45px;
-        }
-
-        body {
-            background: linear-gradient(135deg, rgb(47, 47, 47), rgb(3, 4, 59));
-        }
-
-        h5 {
-            color: white;
-            margin: 25px 0 15px 0;
-            font-size: 1.75rem;
-            font-family: sans-serif;
-            text-align: center;
-        }
-
-        a {
-            text-decoration: none;
-            font-family: sans-serif;
-        }
-
-        .card {
-            background: white;
-            display: flex;
-            flex-direction: column;
-            width: 40vw;
-            margin: 0 auto;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .button-template {
-            background: black;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: var(--table-row-height);
-            font-size: 20px;
-            font-weight: 500;
-            border: none;
-            outline: none;
-            border-radius: 25px;
-            transition: background 0.15s;
-        }
-
-        .create-movie-list-button {
-            background: #ff5233;
-            height: 50px;
-            margin-bottom: 10px;
-            font-size: 22px;
-        }
-
-        .create-movie-list-button:hover {
-            background: #da462c;
-            text-decoration: none;
-        }
-
-        table {
-            margin-top: 10px;
-        }
-
-        td {
-            padding: 5px 0;
-        }
-
-        .list-name {
-            color: white;
-            font-size: 22px;
-            line-height: var(--table-row-height);
-            text-indent: 10px;
-        }
-
-        .list-name a {
-            color: black;
-        }
-
-        .list-name a:hover {
-            color: gray;
-            text-decoration: none;
-        }
-
-        .delete-button-container {
-            width: 150px;
-        }
-
-        .delete-button {
-            background: #ff5233;
-        }
-
-        .delete-button:hover {
-            background: #da462c;
-            text-decoration: none;
-        }
-    </style>
-
-    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
+
+
 
 <body>
     {% include 'movie/navbar.html' %}
+    <script>
+        function clicked(e) {
+            if (!confirm('Are you sure?')) {
+                e.preventDefault();
+            }
+        }
+
+        var listName = document.getElementById('fname').value;
+    </script>
 
     <div class="container">
-        <h5>Your Movie Lists:</h5>
         <div class="card">
-            <a class="button-template create-movie-list-button" href="{% url 'create_list' %}">Create New Movie List</a>
+
+            <a class="button-template create-movie-list-button" data-toggle="modal"
+               data-target="#createList" href="">Create New Movie List</a>
             <table>
                 {% for list in user_movie_lists %}
                 <tr>
                     <td class="list-name"><a href="{% url 'movies' list.id %}">{{list}}</a></td>
                     <td class="delete-button-container"><a class="button-template delete-button"
-                            href="{% url 'delete_list' list.id %}">Delete</a></td>
+                            href="{% url 'delete_list' list.id %}" onclick="clicked(event)">Delete</a></td>
                 </tr>
                 {% endfor %}
 
+                <!-- Modal Movie Info-->
+                <div class="modal fade" id="createList" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <p class="modal-title">Create Movie List</p>
+                            </div>
+
+                            <div class="modal-body">
+                                <form id="movieList" action='/create_list/' method='post'>{% csrf_token %}
+                                    <label for="fname"></label>
+                                    <input type="text" id="fname" name="fname" placeholder="List name" required>
+                                    <br><br>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <input class="submit-button" type="submit" form="movieList" value="Create">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </table>
         </div>
     </div>

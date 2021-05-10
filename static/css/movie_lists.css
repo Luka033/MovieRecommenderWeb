@@ -1,0 +1,117 @@
+html,
+body {
+    width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    animation: fade-in 0.5s ease-out;
+
+    --table-row-height: 45px;
+}
+
+body {
+    background: linear-gradient(135deg, rgb(47, 47, 47), rgb(3, 4, 59));
+}
+
+h5 {
+    color: white;
+    margin: 25px 0 15px 0;
+    font-size: 1.75rem;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    font-family: sans-serif;
+}
+
+.card {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    width: 40vw;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.button-template {
+    background: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: var(--table-row-height);
+    font-size: 20px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    transition: background 0.15s;
+}
+
+.create-movie-list-button {
+    background: #ff5233;
+    height: 50px;
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+.create-movie-list-button:hover {
+    background: #da462c;
+    text-decoration: none;
+}
+
+table {
+    margin-top: 10px;
+}
+
+td {
+    padding: 5px 0;
+}
+
+.list-name {
+    color: white;
+    font-size: 22px;
+    line-height: var(--table-row-height);
+    text-indent: 10px;
+}
+
+.list-name a {
+    color: black;
+}
+
+.list-name a:hover {
+    color: gray;
+    text-decoration: none;
+}
+
+
+.modal-header {
+    background: #ff5233 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.submit-button {
+    background: #ff5233 !important;
+    height: 30px;
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+.delete-button-container {
+    width: 150px;
+}
+
+.delete-button {
+    background: #ff5233;
+}
+
+.delete-button:hover {
+    background: #da462c;
+    color: white !important;
+    text-decoration: none;
+}

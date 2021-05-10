@@ -6,7 +6,6 @@ urlpatterns = [
     path('movie_lists/', views.movie_lists, name="movie_lists"),
     path('movies/<str:pk>', views.movies, name="movies"),
 
-    # path(r'^add_movie/(?P<value>\s+)/$', views.add_movie_to_list, name='add_movie'),
     path('add_movie/<str:pk>', views.add_movie, name="add_movie"),
     path('remove_movie/<str:pk>', views.remove_movie, name="remove_movie"),
 

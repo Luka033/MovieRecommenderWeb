@@ -15,6 +15,8 @@ class MovieList(models.Model):
 class Movie(models.Model):
     movie_list = models.ForeignKey(MovieList, null=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
+    release_year = models.CharField(max_length=200, null=True)
+    genres = models.CharField(max_length=200, null=True)
     director = models.CharField(max_length=200, null=True)
     cast = models.CharField(max_length=200, null=True)
     rating = models.CharField(max_length=200, null=True)

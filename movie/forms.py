@@ -19,10 +19,6 @@ class CreateUserForm(UserCreationForm):
 
 
 class CreateListForm(ModelForm):
-    # def __init__(self, *args, **kwargs):
-    #     super(CreateListForm, self).__init__(*args, **kwargs)
-    #     self.fields['user'].initial = "Lukieeee"
-
     class Meta:
         model = MovieList
         fields = '__all__'
