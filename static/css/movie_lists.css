@@ -60,6 +60,7 @@ a {
 
 .create-movie-list-button:hover {
     background: #da462c;
+    color: white;
     text-decoration: none;
 }
 
@@ -89,17 +90,39 @@ td {
 
 
 .modal-header {
-    background: #ff5233 !important;
+    background: #ff5233;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
+.modal-body
+{
+    display: flex;
+    justify-content: center;
+}
+
+.modal-title {
+    color: white;
+    font-size: 25px;
+    font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.list-name-input
+{
+    padding: 5px 10px;
+    outline: none;
+}
+
 .submit-button {
     background: #ff5233 !important;
-    height: 30px;
-    margin-bottom: 10px;
-    font-size: 22px;
+    border: none !important;
+    transition: background 0.15s;
+}
+
+.submit-button:hover {
+    background: #da462c !important;
 }
 
 .delete-button-container {

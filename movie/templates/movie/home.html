@@ -9,8 +9,6 @@
     <title>Movie Recommender</title>
 
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
-
-
 </head>
 
 <body>
@@ -21,7 +19,7 @@
     <form class="search-bar-form" method="POST">
         <div class="search-bar-container">
             {% csrf_token %}
-<!--            {{form.name}}-->
+            <!--            {{form.name}}-->
             <a data-toggle="tooltip" title="Enter a movie title and get similar movies">{{form.name}}</a>
         </div>
 
@@ -30,7 +28,7 @@
 
     <section class="movies-section">
         {% for message in messages %}
-            <p class="welcome-text">{{message}}</p>
+        <p class="welcome-text">{{message}}</p>
         {% endfor %}
 
         {% if movies %}
@@ -44,13 +42,11 @@
                 <div class="movie-info">
                     <p class="movie-title">{{movie.0}}</p>
                     <div class="movie-rating-container">
-                        <div class="movie-rating" style="--rating: {% widthratio movie.3 1 10 %}%"></div>
+                        <div class="movie-rating" style="--rating: {% widthratio movie.5 1 10 %}%"></div>
                     </div>
                 </div>
 
-                <a class="add-movie-button" type="button" data-toggle="modal" data-target="#addModal{{movie}}">
-                    Add
-                </a>
+                <a class="add-movie-button" type="button" data-toggle="modal" data-target="#addModal{{movie}}">Add</a>
 
                 <!-- Modal Movie Info -->
                 <div class="modal fade" id="myModal{{movie}}" tabindex="-1" role="dialog" aria-labelledby="myModalTitle"
@@ -88,23 +84,23 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-
                                 <h5 class="modal-title" id="addModalTitle">Add {{movie.0}} to List</h5>
                             </div>
                             <div class="modal-body">
                                 {% if user.is_authenticated %}
-                                    {% if user_movie_lists %}
-                                        {% for movie_list in user_movie_lists %}
-                                        <form action="{% url 'add_movie' movie_list.id %}" method="GET">
-                                            <button class="add-button" name="movie" value="{{ movie.0 }}">{{ movie_list }}</button>
-                                            <br>
-                                        </form>
-                                        {% endfor %}
-                                    {% else %}
-                                        <h5>You must create a movie list before you can add movies</h5>
-                                    {% endif %}
+                                {% if user_movie_lists %}
+                                {% for movie_list in user_movie_lists %}
+                                <form action="{% url 'add_movie' movie_list.id %}" method="GET">
+                                    <button class="btn btn-secondary movie-list-button" name="movie"
+                                        value="{{ movie.0 }}">{{movie_list}}</button>
+                                    <br>
+                                </form>
+                                {% endfor %}
                                 {% else %}
-                                    <h5>You must be logged in to add movies</h5>
+                                <h5>You must create a movie list before you can add movies</h5>
+                                {% endif %}
+                                {% else %}
+                                <h5>You must be logged in to add movies</h5>
                                 {% endif %}
 
                             </div>
@@ -122,8 +118,39 @@
             </div>
             {% endfor %}
         </div>
+
+        <button class="load-more-button">Load more</button>
+
+        <script>
+            const loadMoreButton = document.querySelector('.load-more-button');
+            const movies = document.querySelector('.movies');
+
+            const movieChunks = 16; // The amount of movies in each chunk 
+
+            let shownMovies = movieChunks; // The amount of movies we show initially (there is 4 movies / row in a 1920x1080 screen)
+
+            const updateMovies = () => {
+                for (let i = 0; i < movies.children.length; i++) {
+                    movies.children[i].style.display = i >= shownMovies ? 'none' : 'block';
+                }
+            }
+
+            loadMoreButton.onclick = () => {
+                // If this is the last chunk of movies we load in, hide the button
+                if (shownMovies === movies.children.length - movieChunks) {
+                    loadMoreButton.style.display = 'none';
+                }
+
+                shownMovies += movieChunks; // The amount of new movies we show each time the user clicks the "load more" button
+
+                updateMovies();
+            }
+
+            updateMovies(); // Initial movie load
+        </script>
+
         {% else %}
-        <h1 class="welcome-text">Find your favorite movies in our collection of over 10.000 movies!</h1>
+        <h1 class="welcome-text">Find your favorite movies in our collection of over 10 000 movies!</h1>
         {% endif %}
     </section>
 </body>
