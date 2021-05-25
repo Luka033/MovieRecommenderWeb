@@ -9,10 +9,8 @@
     <link rel="stylesheet" href="{% static 'css/movie_lists.css' %}">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-
-
 
 <body>
     {% include 'movie/navbar.html' %}
@@ -28,9 +26,9 @@
 
     <div class="container">
         <div class="card">
+            <a class="button-template create-movie-list-button" data-toggle="modal" data-target="#createList"
+                href="">Create New Movie List</a>
 
-            <a class="button-template create-movie-list-button" data-toggle="modal"
-               data-target="#createList" href="">Create New Movie List</a>
             <table>
                 {% for list in user_movie_lists %}
                 <tr>
@@ -41,23 +39,24 @@
                 {% endfor %}
 
                 <!-- Modal Movie Info-->
-                <div class="modal fade" id="createList" tabindex="-1" role="dialog"
-                    aria-labelledby="myModalTitle" aria-hidden="true">
+                <div class="modal fade" id="createList" tabindex="-1" role="dialog" aria-labelledby="myModalTitle"
+                    aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <p class="modal-title">Create Movie List</p>
+                                <h5 class="modal-title">Create Movie List</h5>
                             </div>
 
                             <div class="modal-body">
                                 <form id="movieList" action='/create_list/' method='post'>{% csrf_token %}
-                                    <label for="fname"></label>
-                                    <input type="text" id="fname" name="fname" placeholder="List name" required>
-                                    <br><br>
+                                    <input class="list-name-input" type="text" id="fname" name="fname"
+                                        placeholder="List name" required>
                                 </form>
                             </div>
+
                             <div class="modal-footer">
-                                <input class="submit-button" type="submit" form="movieList" value="Create">
+                                <button class="btn btn-secondary submit-button" type="submit" form="movieList"
+                                    value="Create">Submit</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>

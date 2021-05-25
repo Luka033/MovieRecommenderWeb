@@ -65,7 +65,7 @@ td {
 }
 
 .movie-name a:hover {
-    color: gray;
+    color: gray !important;
     text-decoration: none;
 }
 
@@ -97,31 +97,19 @@ td {
     background: #ff5233;
     display: flex;
     flex-direction: column;
-    justify-content: center !important;
-    height: 100px;
-    padding: 0 !important;
+    justify-content: center;
 }
 
 .modal-title {
     color: white;
-    margin-left: 20px;
     font-size: 25px;
     font-weight: 500;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .modal-footer {
     border: none !important;
     padding-top: 0 !important;
-}
-
-.close-button {
-    background: #ff5233;
-    padding: 8px 25px;
-    font-size: 18px;
-}
-
-.close-button:hover {
-    background: #da462c;
 }
 
 .back-button {

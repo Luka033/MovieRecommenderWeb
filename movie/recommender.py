@@ -65,7 +65,7 @@ class MovieRecommender:
         for movie in sorted_similar_movies:
             best_movies.append(self.get_title_from_index(movie[0]))
             i = i + 1
-            if i >= 40:
+            if i >= 80:
                 break
 
         return best_movies
