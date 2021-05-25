@@ -9,17 +9,15 @@ from movie_recommender.settings import STATICFILES_DIRS
 
 class MovieRecommender:
     def __init__(self):
-        self.df = pd.read_csv(os.path.join(
-            STATICFILES_DIRS[0], 'data/IMDB_movie_posters.csv'))
-        self.df = self.df.head(5000)
-        # self.features = ['keywords', 'cast', 'genres', 'director']
+        self.df = pd.read_csv(os.path.join(STATICFILES_DIRS[0], 'data/IMDB_dataset.csv'))
+        # self.df = self.df.head(5000)
+
         self.features = ['keywords', 'genres']
 
         for feature in self.features:
             self.df[feature] = self.df[feature].fillna('')
 
-        self.df['combined_features'] = self.df.apply(
-            self.combine_features, axis=1)
+        self.df['combined_features'] = self.df.apply(self.combine_features, axis=1)
 
     def combine_features(self, row):
         try:

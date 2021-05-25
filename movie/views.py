@@ -119,7 +119,7 @@ def search_movie(request):
                     movie_info = recommender.get_movie_info(movie)
                     info_for_all_movies.append(movie_info)
             else:
-                messages.info(request, 'We apologize, We could not find similar movies. Please try another movie')
+                messages.info(request, 'We apologize, we could not find any similar movies. Please try another movie.')
 
     context = {'movies': info_for_all_movies,
                'user_movie_lists': user_movie_lists,
